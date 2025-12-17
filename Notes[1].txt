@@ -1,0 +1,230 @@
+-> Practical 1
+#To show ARP table 
+Arp –a	
+
+#To delete ARP table
+Arp –d			
+		
+#To show mac address on switch
+Switch -> CLI ->
+Enable
+Show mac-address-table
+exit
+
+#Show ARP request in router
+Enable
+Show arp
+
+#Delete ARP table on switch 
+Switch -> CLI ->
+Enable
+clear mac-address-table
+exit
+
+
+
+
+-> DHCP
+------------------------------------------------------------
+To show running configuration
+------------------------------------------------------------
+Router>enable
+Router#show run
+
+--- OR ---
+ 
+Router#configure terminal 
+Router(config)#do show run
+
+------------------------------------------------------------
+To set IP in Router
+------------------------------------------------------------
+Router>enable
+Router#config terminal
+Router(config)#interface gigabitEthernet 0/0/1
+Router(config-if)#ip address 192.168.50.1 255.255.255.0
+Router(config-if)#no shutdown
+Router(config-if)#exit
+
+------------------------------------------------------------
+To enable helper command for DHCP 
+------------------------------------------------------------
+Router>enable
+Router#config terminal
+Router(config)#interface gigabitEthernet 0/0/1
+Router(config-if)#ip helper-address 192.168.1.2 (DHCP Server)
+Router(config-if)#exit
+
+------------------------------------------------------------
+Website HTML code ( at HTTP server as index.html)
+------------------------------------------------------------
+<html>
+	<hr> 
+		<center>
+			<font size='+4' color='red' > 
+				Google Website
+			</font>
+		</center>	
+	<hr>
+</html>
+
+
+
+-> ACL
+enable
+configure terminal
+
+ip access-list extended R1
+ remark ACL on Router1 (extended)
+ permit ip <A.B.C.0> 0.0.0.255 any
+ permit ip host <A.B.C.D> host <P.Q.R.S>
+exit
+
+interface gigabitEthernet 0/0/0
+ip access-group R0 out
+do write
+
+no ip access-list standard R0
+
+****************************************************
+
+-> Practical 5
+-------------------------------------
+TELNET at router
+-------------------------------------
+enable
+configure terminal
+
+enable secret <SECRET PASSWORD>
+
+username <USERNAME> password <PASSWORD>
+username <USERNAME> password <PASSWORD>
+username <USERNAME> password <PASSWORD>
+
+line vty 0 <NO. OF ACCESS AT A TIME-1>
+password <TELNET LOGIN PASSWORD>    // optional for without password login
+login local    // If only login then it means any one
+                       // can login with telnet password
+exit
+
+show user
+service password-encryption // to encrypt password inplace of enable secret
+
+-------------------------------------
+SSH at router
+-------------------------------------
+enable
+configure terminal
+
+hostname R1      
+enable secret <SECRET PASSWORD>
+ip domain name <DOMAIN NAME> 
+crypto key generate rsa
+1024
+enable password commonpassword  // Optional in place of enable secret
+
+username <USERNAME> password <PASSWORD>
+username <USERNAME> password <PASSWORD>
+username <USERNAME> password <PASSWORD>
+
+ip ssh version 2
+
+line vty 0 <NO. OF ACCESS AT A TIME-1>
+transport input ssh
+login local
+exit
+
+-------------------------------------
+PC 
+-------------------------------------
+telnet <ROUTER IP>
+user1
+->     pswd1
+exit
+
+ssh -l user1 <ROUTER IP>
+->     pswd1
+enable 
+->     r0sct
+
+-------------------------------------
+FTP
+-------------------------------------
+create txt file
+dir
+ftp <SERVER IP>
+put demo.txt
+get demo.txt
+quit
+
+END OF PR!
+****************************************
+
+
+
+
+-> OSPF
+enable
+conf t
+
+do show ip int brief
+do show ip protocols
+
+router ospf 1
+network 172.16.1.16 0.0.0.15 area 0   
+
+show ip ospf neighbor
+show ip route
+
+show int ser0/0/0
+##  bw is 1544 kbit
+
+show ip ospf int ser0/0/0
+##  cost = 100 / bw (in MB)
+
+##  change cost 	
+int s0/0/0
+ip ospf cost 100
+
+
+
+
+-> BGP
+router bgp 100 
+neighbor 10.0.0.1 remote-as 35
+network 192.168.10.0 mask 255.255.255.0
+
+----------------------------------------------------------
+neighbor table -->
+show ip bgp neighbors
+show ip bgp summary
+
+BGP database table -->
+show ip bgp
+
+Routing table -->
+show ip route
+
+
+
+
+-> EIGRP
+	router eigrp 500
+network 192.168.12.0
+network 192.168.12.0
+
+# --- to support subnetting---
+#no auto-summary
+
+show ip route
+show ip eigrp topology
+show ip route eigrp | b 10.0.0.0
+
+show int s0/1/0
+
+metric=((10^7/BW)+(cumulative delay/10))*256
+multicast = 224.0.0.10
+
+int g0/0/0
+bandwidth 99000
+
